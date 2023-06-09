@@ -1,0 +1,16 @@
+/home/liam/Desktop/ICS-4U/gameEngineTesting /bin/Debug/net6.0/gameEngineTesting
+/home/liam/Desktop/ICS-4U/gameEngineTesting /bin/Debug/net6.0/gameEngineTesting.deps.json
+/home/liam/Desktop/ICS-4U/gameEngineTesting /bin/Debug/net6.0/gameEngineTesting.runtimeconfig.json
+/home/liam/Desktop/ICS-4U/gameEngineTesting /bin/Debug/net6.0/gameEngineTesting.dll
+/home/liam/Desktop/ICS-4U/gameEngineTesting /bin/Debug/net6.0/ref/gameEngineTesting.dll
+/home/liam/Desktop/ICS-4U/gameEngineTesting /bin/Debug/net6.0/gameEngineTesting.pdb
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.csproj.AssemblyReference.cache
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.GeneratedMSBuildEditorConfig.editorconfig
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.AssemblyInfoInputs.cache
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.AssemblyInfo.cs
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.csproj.CoreCompileInputs.cache
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.csproj.CopyComplete
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.dll
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/ref/gameEngineTesting.dll
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.pdb
+/home/liam/Desktop/ICS-4U/gameEngineTesting /obj/Debug/net6.0/gameEngineTesting.genruntimeconfig.cache
