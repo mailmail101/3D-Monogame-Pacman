@@ -7,36 +7,38 @@ namespace Shapes
 {
 public class Shape
 {
+    public Vector3 velocity = Vector3.Zero;
+    public Vector3 acceleration = Vector3.Zero;
     public VertexPositionColorNormalTexture[] _vertexs;
-    private Vector3[] positionInRealitionToShapePosition;
+    protected Vector3[] positionInRealitionToShapePosition;
     ///<summary>the scale of the shape</summary>
-    private float _scale = 1f;
+    protected float _scale = 1f;
     ///<summary>the scale of the shape</summary>
     public float Scale
     {
         get { return _scale; }
-        set {SplitScaleInoXYZParts(Scale); Update(); _scale = value; }  
+        set {SplitScaleInoXYZParts(Scale); _scale = value; }  
     }
-    private float _scaleX = 1f;
+    protected float _scaleX = 1f;
     ///<summary>the X scale of the shape</summary>
     public float ScaleX
     {
         get { return _scaleX; }
-        set {Update(); _scaleX = value; }  
+        set {_scaleX = value; }  
     }
-    private float _scaleY = 1f;
+    protected float _scaleY = 1f;
     ///<summary>the Y scale of the shape</summary>
     public float ScaleY
     {
         get { return _scaleY; }
-        set {Update(); _scaleY = value; }  
+        set {_scaleY = value; }  
     }
-    private float _scaleZ = 1f;
+    protected float _scaleZ = 1f;
     ///<summary>the Z scale of the shape</summary>
     public float ScaleZ
     {
         get { return _scaleZ; }
-        set {Update(); _scaleZ = value; }  
+        set {_scaleZ = value; }  
     }
     ///<summary>The X rotation of the shape in radians</summary>
     public float XRotation {get; set;} = 0f;
@@ -45,12 +47,26 @@ public class Shape
     ///<summary>The Z rotation of the shape in radians</summary>
     public float ZRotation {get; set;} = 0f;
     ///<summary>the location of the front top right point</summary>
-    private Vector3 _position = new Vector3(0, 0, 0);
+    protected Vector3 _position = Vector3.Zero;
+    public BoundingBox boundingBox;
     ///<summary>the location of the front top right point</summary>
     public Vector3 Position
     {
         get { return _position; }
-        set {Update(); _position = value; }  
+        set {_position = value; }  
+    }
+    protected Shape()
+    {
+
+    }
+    public Shape(Vector3[] vectors, Color color)
+    {
+        positionInRealitionToShapePosition = vectors;
+        _vertexs = new VertexPositionColorNormalTexture[vectors.Length];
+        for(int i = 0; i < vectors.Length; i++)
+        {
+            _vertexs[i].Color = color;
+        }
     }
     public Shape(string fileName)
     {
@@ -114,7 +130,7 @@ public class Shape
         }
 
     }
-    private void SplitScaleInoXYZParts(float scale)
+    protected void SplitScaleInoXYZParts(float scale)
     {
         _scaleX = scale;
         _scaleY = scale;
@@ -122,11 +138,28 @@ public class Shape
     }
     public void Update()
     {
-        Matrix rotationMatrix = Matrix.CreateRotationX(XRotation) * Matrix.CreateRotationY(YRotation)* Matrix.CreateRotationZ(ZRotation);
+        velocity += acceleration;
+        _position += velocity;
+       Matrix rotationMatrix = Matrix.CreateRotationX(XRotation) * Matrix.CreateRotationY(YRotation)* Matrix.CreateRotationZ(ZRotation);
         for (int i = 0; i < _vertexs.Length; i++)
         {
             _vertexs[i].Position = Vector3.Transform((positionInRealitionToShapePosition[i] + Position) * new Vector3(_scaleX, _scaleY, _scaleZ), rotationMatrix) ;
+            if (i ==0)
+            {
+                boundingBox.Min =  _vertexs[0].Position;
+                boundingBox.Max = _vertexs[0].Position;                
+            }
+            // x
+            if (_vertexs[i].Position.X < boundingBox.Min.X){boundingBox.Min.X = _vertexs[i].Position.X;}
+            else if (_vertexs[i].Position.X > boundingBox.Max.X){boundingBox.Max.X = _vertexs[i].Position.X;}
+            // y
+            if (_vertexs[i].Position.Y < boundingBox.Min.Y ){boundingBox.Min.Y = _vertexs[i].Position.Y;}
+            else if (_vertexs[i].Position.Y > boundingBox.Max.Y){boundingBox.Max.Y = _vertexs[i].Position.Y;}
+            // z
+            if (_vertexs[i].Position.Z < boundingBox.Min.Z){boundingBox.Min.Z = _vertexs[i].Position.Z;}
+            else if (_vertexs[i].Position.Z > boundingBox.Max.Z){boundingBox.Max.Z = _vertexs[i].Position.Z;}
         }
+
     }
     public void ReCalculateNormals()
     {

@@ -13,13 +13,14 @@ public class Game1 : Game
     private BasicEffect _basicEffect;
     public Camera camera;
     private SpriteBatch _spriteBatch;
-    Cube[] cube;
+    List<RectangularPrism> wallSegments;
     private Vector3 position = new Vector3(0f, 0f, 0f);
-    public VertexPositionColorNormalTexture[] _vertexs = new VertexPositionColorNormalTexture[72];
+    public List<VertexPositionColorNormalTexture> _vertexs = new List<VertexPositionColorNormalTexture>();
     private float angle = 0;
 
     public Game1()
     {
+        Window.AllowUserResizing = true;
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -27,9 +28,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-
-        // TODO: Add your initialization logic here
-
         base.Initialize();
     }
 
@@ -37,13 +35,12 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         camera = new Camera();
-        cube = new Cube[2];
-        cube[0] = new Cube(10, new Vector3 (10, -10, -20), new Color (254, 0, 0));
-        cube[1] = new Cube(32.6f, new Vector3 (-30, -100, -10), new Color (0, 0, 255));
+
         _basicEffect = new BasicEffect(GraphicsDevice);
         _basicEffect.VertexColorEnabled = true;
+        _basicEffect.LightingEnabled = true;
         _basicEffect.AmbientLightColor = new Vector3(0f,0f,1f);
-       
+       wallSegments = WallCode();
         Matrix projection = Matrix.
         CreatePerspectiveFieldOfView(
         (float)Math.PI / 3.0f, 
@@ -90,20 +87,13 @@ public class Game1 : Game
             camera.ZRotation += 0.01f * (float)Math.PI;
         if(Keyboard.GetState().IsKeyDown(Keys.G))
             camera.ZRotation -= 0.01f * (float)Math.PI;
-        
-        
+        _vertexs = new List<VertexPositionColorNormalTexture>();
+        foreach(RectangularPrism prism in wallSegments)
+        {
+            _vertexs.AddRange(prism._vertexs);
+        }
         // sets the view point
         _basicEffect.View = camera.Update();
-        cube[0].YRotation += 0.01f;
-        foreach(Cube cu in cube)
-        {
-            cu.Update();
-        }
-        for (int i = 0; 36 > i; i++)
-        {
-            _vertexs[i] = cube[0]._vertexs[i];
-            _vertexs[i + 36] = cube[1]._vertexs[i];
-        }
         if (angle > 2 * Math.PI) angle = 0;
 
 
@@ -130,10 +120,69 @@ public class Game1 : Game
         pass.Apply();
         _graphics.GraphicsDevice.DrawUserPrimitives
         <VertexPositionColorNormalTexture>(
-            PrimitiveType.TriangleList,_vertexs, 
-                                        0, _vertexs.Length / 3);
+            PrimitiveType.TriangleList,_vertexs.ToArray(), 
+                                        0, _vertexs.Count / 3);
         }
 
         base.Draw(gameTime);
+    }
+    public List<RectangularPrism> WallCode()
+    {
+        List<RectangularPrism> walls = new List<RectangularPrism>();
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, 0), new Vector3(280, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (10, 0, -90), new Vector3(10, 10, 100), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -90), new Vector3(10, 10, 100), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (150, 0, -40), new Vector3(20, 10, 40), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -300), new Vector3(280, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (10, 0, -300), new Vector3(10, 10, 110), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -300), new Vector3(10, 10, 110), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -40), new Vector3(40, 10, 30), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (260, 0, -40), new Vector3(40, 10, 30), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (120, 0, -40), new Vector3(50, 10, 30), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (210, 0, -40), new Vector3(50, 10, 30), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -70), new Vector3(40, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (260, 0, -70), new Vector3(40, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -90), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -90), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -130), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -130), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -150), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -150), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -190), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (280, 0, -190), new Vector3(60, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (150, 0, -100), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (180, 0, -70), new Vector3(80, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (210, 0, -130), new Vector3(20, 10, 80), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (90, 0, -130), new Vector3(20, 10, 80), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (120, 0, -100), new Vector3(30, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (190, 0, -100), new Vector3(30, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (210, 0, -190), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (90, 0, -190), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (30, 0, -250), new Vector3(20, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (270, 0, -250), new Vector3(20, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -130), new Vector3(10, 10, 40), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -190), new Vector3(10, 10, 40), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (230, 0, -130), new Vector3(10, 10, 40), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (230, 0, -190), new Vector3(10, 10, 40), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (150, 0, -220), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (180, 0, -190), new Vector3(80, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (90, 0, -260), new Vector3(20, 10, 30), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (120, 0, -280), new Vector3(100, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (210, 0, -260), new Vector3(20, 10, 30), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (260, 0, -280), new Vector3(100, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (120, 0, -220), new Vector3(50, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (210, 0, -220), new Vector3(50, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (60, 0, -250), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (240, 0, -250), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (40, 0, -220), new Vector3(20, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (260, 0, -220), new Vector3(20, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (150, 0, -280), new Vector3(20, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (180, 0, -250), new Vector3(80, 10, 20), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (110, 0, -160), new Vector3(10, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (180, 0, -160), new Vector3(10, 10, 50), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (130, 0, -120), new Vector3(30, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (180, 0, -120), new Vector3(30, 10, 10), Color.Blue));
+        walls.Add(new RectangularPrism(new Vector3 (180, 0, -160), new Vector3(80, 10, 10), Color.Blue));
+        return walls;
     }
 }
