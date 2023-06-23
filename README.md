@@ -1,7 +1,7 @@
 # 3DMonoGameEngine
 3d pacman
 
-Contols:
+Controls:
 press 1 for first person camera 
 wasd or arror keys for movement and use mouse to look around
 
