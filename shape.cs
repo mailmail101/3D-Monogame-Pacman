@@ -44,17 +44,13 @@ public class Shape
     public float XRotation {get; set;} = 0f;
     ///<summary>The Y rotation of the shape in radians</summary>
     public float YRotation {get; set;} = 0f;
+    public Vector3 middleOfBoundingBox = new Vector3(0, 0, 0);
     ///<summary>The Z rotation of the shape in radians</summary>
     public float ZRotation {get; set;} = 0f;
     ///<summary>the location of the front top right point</summary>
-    protected Vector3 _position = Vector3.Zero;
+    public Vector3 _position = Vector3.Zero;
     public BoundingBox boundingBox;
     ///<summary>the location of the front top right point</summary>
-    public Vector3 Position
-    {
-        get { return _position; }
-        set {_position = value; }  
-    }
     protected Shape()
     {
 
@@ -141,9 +137,10 @@ public class Shape
         velocity += acceleration;
         _position += velocity;
        Matrix rotationMatrix = Matrix.CreateRotationX(XRotation) * Matrix.CreateRotationY(YRotation)* Matrix.CreateRotationZ(ZRotation);
+        middleOfBoundingBox = new Vector3((boundingBox.Min.X + boundingBox.Max.X) / 2, (boundingBox.Min.Y + boundingBox.Max.Y) / 2, (boundingBox.Min.Z + boundingBox.Max.Z) / 2);
         for (int i = 0; i < _vertexs.Length; i++)
         {
-            _vertexs[i].Position = Vector3.Transform((positionInRealitionToShapePosition[i] + Position) * new Vector3(_scaleX, _scaleY, _scaleZ), rotationMatrix) ;
+            _vertexs[i].Position = Vector3.Transform((positionInRealitionToShapePosition[i] + _position) * new Vector3(_scaleX, _scaleY, _scaleZ), rotationMatrix);
             if (i ==0)
             {
                 boundingBox.Min =  _vertexs[0].Position;

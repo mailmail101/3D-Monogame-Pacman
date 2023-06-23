@@ -33,13 +33,8 @@ public struct PointOfGravity
 }
 public class Physics
 {
-    public List<Shape> _shapes;
     public Vector3 _universalGravity = new Vector3(0, 0, 0);
     public List<PointOfGravity> _gravityObjects; 
-    public Physics(List<Shape> shapes)
-    {
-        _shapes = shapes;
-    }
     ///<summary>apply's gravity to all obj in list does require each shape to be updated for chage in position</summary>
     public List<Shape> ApplyGravity(List<Shape> shapes)
     {
@@ -48,7 +43,7 @@ public class Physics
             shape.velocity += _universalGravity;
             foreach(PointOfGravity gravPoint in _gravityObjects)
             {
-                Vector3 vectordistance = shape.Position -gravPoint.Position;
+                Vector3 vectordistance = shape._position -gravPoint.Position;
                 float distance =(float) Math.Sqrt((Math.Pow((double)vectordistance.X, 2)) + 
                                                                     (Math.Pow((double)vectordistance.Y, 2)) + 
                                                                     (Math.Pow((double)vectordistance.Z, 2)));
@@ -61,6 +56,7 @@ public class Physics
         }
         return shapes;
     }
+    
     public bool Collision(Shape shapeToCheck, Shape[] shapesToCheckAgainst)
     {
         List<BoundingBox> boxs = new List<BoundingBox>();
@@ -81,5 +77,24 @@ public class Physics
         }
         return false;
     }
+    public bool CollisionNOUpDate(Shape shapeToCheck, Shape[] shapesToCheckAgainst)
+    {
+        List<BoundingBox> boxs = new List<BoundingBox>();
+        foreach(Shape shape in shapesToCheckAgainst){boxs.Add(shape.boundingBox);}
+        foreach(BoundingBox box in boxs)
+        {
+            if( shapeToCheck.boundingBox.Min.X <= box.Max.X &&
+                shapeToCheck.boundingBox.Max.X >= box.Min.X &&
+                shapeToCheck.boundingBox.Min.Y <= box.Max.Y &&
+                shapeToCheck.boundingBox.Max.Y >= box.Min.Y &&
+                shapeToCheck.boundingBox.Min.Z <= box.Max.Z &&
+                shapeToCheck.boundingBox.Max.Z >= box.Min.Z)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

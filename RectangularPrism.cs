@@ -57,6 +57,18 @@ public class RectangularPrism : Shape
         this.positionInRealitionToShapePosition[33] = this.positionInRealitionToShapePosition[27] + new Vector3(- size.X, 0, 0);
         this.positionInRealitionToShapePosition[34] = this.positionInRealitionToShapePosition[29] + new Vector3(- size.X, 0, 0);
         this.positionInRealitionToShapePosition[35] = this.positionInRealitionToShapePosition[28] + new Vector3(- size.X, 0, 0);
+        // foreach(Vector3 vector in positionInRealitionToShapePosition)
+        // {
+        //     if (vector.X < boundingBox.Min.X){boundingBox.Min.X = vector.X;}
+        //     else if (vector.X > boundingBox.Max.X){boundingBox.Max.X = vector.X;}
+        //     // y
+        //     if (vector.Y < boundingBox.Min.Y ){boundingBox.Min.Y = vector.Y;}
+        //     else if (vector.Y > boundingBox.Max.Y){boundingBox.Max.Y = vector.Y;}
+        //     // z
+        //     if (vector.Z < boundingBox.Min.Z){boundingBox.Min.Z = vector.Z;}
+        //     else if (vector.Z > boundingBox.Max.Z){boundingBox.Max.Z = vector.Z;}
+
+        // }
         this.Update();
         this.ReCalculateNormals();
     }
