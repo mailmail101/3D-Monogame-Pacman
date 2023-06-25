@@ -1,6 +1,4 @@
-# 3DMonoGameEngine
-3d pacman
-
+# 3D Monogame Pacman
 Controls:
 press 1 for first person camera 
 wasd or arror keys for movement and use mouse to look around
